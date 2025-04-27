@@ -94,7 +94,7 @@ export function YesNoWheelTool() {
     setTimeout(() => {
       try {
         // Use the actual wheel result from the visual wheel
-        const answer = wheelResultRef.current || "Yes" // Fallback to Yes if somehow undefined
+        const answer = wheelResultRef.current || "Yes";
         console.log(`Spin #${spinCountRef.current} final result: ${answer}`)
 
         setWinner(answer)

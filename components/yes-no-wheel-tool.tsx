@@ -26,10 +26,11 @@ export function YesNoWheelTool() {
   const hasInitializedRef = useRef(false)
   const resultTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Yes/No wheel sections
+  // Yes/No wheel sections - IMPORTANT: Order matters for the angle calculation
+  // The first section (index 0) is on the right half, the second section (index 1) is on the left half
   const sections = [
-    { id: "1", text: "Yes", color: "#4ade80" },
-    { id: "2", text: "No", color: "#f87171" },
+    { id: "1", text: "Yes", color: "#4ade80" }, // Right half (green)
+    { id: "2", text: "No", color: "#f87171" }, // Left half (red)
   ]
 
   // Set isClient to true once component mounts

@@ -25,9 +25,7 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
   const previousSpinningState = useRef(false)
   const spinCountRef = useRef(0)
   const [isInitialized, setIsInitialized] = useState(false)
-
-  // For debugging
-  const [debugInfo, setDebugInfo] = useState<any>(null)
+  const [debugMode, setDebugMode] = useState(false)
 
   // Draw the wheel on the canvas
   const drawWheel = (rotation: number) => {
@@ -96,31 +94,75 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     ctx.closePath()
     ctx.fillStyle = "#ffffff"
     ctx.fill()
+
+    // Debug mode: Draw section boundaries
+    if (debugMode && !isSpinning) {
+      // Draw a line from center to top (pointer position)
+      ctx.beginPath()
+      ctx.moveTo(centerX, centerY)
+      ctx.lineTo(centerX, centerY - radius - 15)
+      ctx.strokeStyle = "yellow"
+      ctx.lineWidth = 2
+      ctx.stroke()
+
+      // Draw section boundaries
+      for (let i = 0; i < sections.length; i++) {
+        const angle = i * sectionAngle + rotation
+        ctx.beginPath()
+        ctx.moveTo(centerX, centerY)
+        ctx.lineTo(centerX + Math.sin(angle) * (radius + 15), centerY - Math.cos(angle) * (radius + 15))
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)"
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+    }
   }
 
   // Determine which section is at the pointer position
   const getWinningSection = (rotation: number) => {
-    // The pointer is at the top (270 degrees or -90 degrees or -π/2 radians)
-    const pointerAngle = -Math.PI / 2
+    // CRITICAL FIX: For a wheel with 2 sections (Yes/No), we can simplify this
+    // The wheel has Yes on the right half and No on the left half
+    // We need to determine which half the pointer is pointing to
 
     // Normalize the rotation to be between 0 and 2π
     const normalizedRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
 
-    // Calculate the actual angle to check (considering the rotation)
-    const actualAngle = (pointerAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI)
+    // For a 2-section wheel, we can directly check if the pointer is in the first or second half
+    // The pointer is at the top (270° or -90° or -π/2 radians)
 
-    // Find which section contains this angle
-    const sectionAngle = (2 * Math.PI) / sections.length
-    let sectionIndex = Math.floor(actualAngle / sectionAngle)
+    // Calculate the angle of the dividing line between sections after rotation
+    // For a 2-section wheel, there are dividing lines at 0° and 180° before rotation
+    const divider1 = normalizedRotation % (2 * Math.PI) // at 0° + rotation
+    const divider2 = (normalizedRotation + Math.PI) % (2 * Math.PI) // at 180° + rotation
 
-    // Safety check to ensure we have a valid index
-    if (sectionIndex < 0) {
-      console.warn(`Correcting invalid section index: ${sectionIndex}`)
-      sectionIndex = 0
-    } else if (sectionIndex >= sections.length) {
-      console.warn(`Correcting invalid section index: ${sectionIndex}`)
-      sectionIndex = sections.length - 1
+    // The pointer is at -π/2 (or 3π/2 in positive angles)
+    const pointerAngle = 1.5 * Math.PI // 270° in radians
+
+    // Determine which section the pointer is in
+    // If the pointer angle is between divider1 and divider2 (going clockwise),
+    // then it's in the first section, otherwise it's in the second section
+
+    // We need to handle the case where the dividers cross the 0/2π boundary
+    let sectionIndex
+
+    if (divider1 < divider2) {
+      // Normal case: dividers don't cross the boundary
+      sectionIndex = pointerAngle >= divider1 && pointerAngle < divider2 ? 0 : 1
+    } else {
+      // Edge case: dividers cross the boundary
+      sectionIndex = pointerAngle >= divider1 || pointerAngle < divider2 ? 0 : 1
     }
+
+    // Log detailed information for debugging
+    console.log({
+      rotation,
+      normalizedRotation: normalizedRotation * (180 / Math.PI) + "°", // convert to degrees for readability
+      divider1: divider1 * (180 / Math.PI) + "°",
+      divider2: divider2 * (180 / Math.PI) + "°",
+      pointerAngle: pointerAngle * (180 / Math.PI) + "°",
+      sectionIndex,
+      result: sections[sectionIndex].text,
+    })
 
     return {
       index: sectionIndex,
@@ -199,6 +241,15 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       }
     }
 
+    // Enable debug mode with keyboard shortcut (Shift+D)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "D" && e.shiftKey) {
+        setDebugMode((prev) => !prev)
+        console.log("Debug mode:", !debugMode)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
     setIsInitialized(true)
 
     return () => {
@@ -211,8 +262,10 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
+
+      window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [])
+  }, [debugMode])
 
   // Handle spinning state changes
   useEffect(() => {
@@ -254,16 +307,6 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       // Get the winning section based on the final rotation
       const { text, index } = getWinningSection(rotationRef.current)
 
-      // Log the result for debugging
-      const debugData = {
-        spinCount: spinCountRef.current,
-        finalRotation: rotationRef.current,
-        winningSection: text,
-        winningIndex: index,
-      }
-      console.log("Wheel result:", debugData)
-      setDebugInfo(debugData)
-
       // Report the result
       if (onResult) {
         console.log(`Reporting result: ${text} (Spin #${spinCountRef.current})`)
@@ -276,15 +319,5 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     previousSpinningState.current = isSpinning
   }, [isSpinning, isInitialized, sections, onResult, spinDuration])
 
-  return (
-    <>
-      <canvas ref={canvasRef} className="w-full h-full" style={{ touchAction: "none" }} />
-      {/* Debug info - uncomment for debugging */}
-      {/* {debugInfo && (
-        <div className="absolute bottom-0 left-0 bg-black/80 text-white text-xs p-2 max-w-xs overflow-auto">
-          <pre>{JSON.stringify(debugInfo, null, 2)}</pre>
-        </div>
-      )} */}
-    </>
-  )
+  return <canvas ref={canvasRef} className="w-full h-full" style={{ touchAction: "none" }} />
 }

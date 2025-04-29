@@ -248,6 +248,30 @@ export default function Home() {
   )
 }
 
+function WheelPreview() {
+  return (
+    <div className="relative w-full h-full">
+      <div className="absolute inset-0 rounded-full overflow-hidden border-4 border-white/20">
+        <div className="absolute w-full h-full">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute top-0 left-0 w-full h-full origin-bottom-center"
+              style={{
+                transform: `rotate(${i * 45}deg)`,
+                clipPath: "polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)",
+                backgroundColor: i % 2 === 0 ? "#9333ea" : "#ec4899",
+              }}
+            ></div>
+          ))}
+        </div>
+      </div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[24px] border-l-transparent border-r-transparent border-b-white"></div>
+    </div>
+  )
+}
+
 const features = [
   {
     title: "Yes or No Decisions",
@@ -394,27 +418,3 @@ const features = [
     ),
   },
 ]
-
-function WheelPreview() {
-  return (
-    <div className="relative w-full h-full">
-      <div className="absolute inset-0 rounded-full overflow-hidden border-4 border-white/20">
-        <div className="absolute w-full h-full">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute top-0 left-0 w-full h-full origin-bottom-center"
-              style={{
-                transform: `rotate(${i * 45}deg)`,
-                clipPath: "polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)",
-                backgroundColor: i % 2 === 0 ? "#9333ea" : "#ec4899",
-              }}
-            ></div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[24px] border-l-transparent border-r-transparent border-b-white"></div>
-    </div>
-  )
-}

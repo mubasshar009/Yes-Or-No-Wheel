@@ -15,14 +15,19 @@ interface WheelProps {
 
 export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const requestRef = useRef<number>()
+  const animationFrameRef = useRef<number>()
   const startTimeRef = useRef<number>(0)
   const rotationRef = useRef<number>(0)
   const targetRotationRef = useRef<number>(0)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
-  const [finalResult, setFinalResult] = useState<string | null>(null)
   const resultReportedRef = useRef(false)
-  const spinResultRef = useRef<number | null>(null)
+  const hasSpunRef = useRef(false)
+  const previousSpinningState = useRef(false)
+  const spinCountRef = useRef(0)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  // For debugging
+  const [debugInfo, setDebugInfo] = useState<any>(null)
 
   // Draw the wheel on the canvas
   const drawWheel = (rotation: number) => {
@@ -91,20 +96,35 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     ctx.closePath()
     ctx.fillStyle = "#ffffff"
     ctx.fill()
+  }
 
-    // If wheel has stopped spinning and we haven't reported the result yet
-    if (!isSpinning && spinResultRef.current !== null && !resultReportedRef.current) {
-      // Get the result based on the predetermined spin result
-      const result = sections[spinResultRef.current].text
-      setFinalResult(result)
+  // Determine which section is at the pointer position
+  const getWinningSection = (rotation: number) => {
+    // The pointer is at the top (270 degrees or -90 degrees or -π/2 radians)
+    const pointerAngle = -Math.PI / 2
 
-      // Report the result via callback
-      if (onResult) {
-        onResult(result)
-      }
+    // Normalize the rotation to be between 0 and 2π
+    const normalizedRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
 
-      resultReportedRef.current = true
-      console.log(`Wheel result determined: ${result}`)
+    // Calculate the actual angle to check (considering the rotation)
+    const actualAngle = (pointerAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI)
+
+    // Find which section contains this angle
+    const sectionAngle = (2 * Math.PI) / sections.length
+    let sectionIndex = Math.floor(actualAngle / sectionAngle)
+
+    // Safety check to ensure we have a valid index
+    if (sectionIndex < 0) {
+      console.warn(`Correcting invalid section index: ${sectionIndex}`)
+      sectionIndex = 0
+    } else if (sectionIndex >= sections.length) {
+      console.warn(`Correcting invalid section index: ${sectionIndex}`)
+      sectionIndex = sections.length - 1
+    }
+
+    return {
+      index: sectionIndex,
+      text: sections[sectionIndex].text,
     }
   }
 
@@ -123,12 +143,14 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     if (isSpinning) {
       // Calculate rotation based on progress
       rotationRef.current = targetRotationRef.current * easeOutCubic(progress)
-    }
 
-    drawWheel(rotationRef.current)
+      // Draw the wheel with the current rotation
+      drawWheel(rotationRef.current)
 
-    if (progress < 1 && isSpinning) {
-      requestRef.current = requestAnimationFrame(animate)
+      // Continue animation if not complete
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+      }
     }
   }
 
@@ -160,34 +182,11 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     drawWheel(rotationRef.current)
   }
 
-  // Reset state when spinning starts
+  // Initialize the wheel
   useEffect(() => {
-    if (isSpinning) {
-      resultReportedRef.current = false
-      setFinalResult(null)
+    // Initial size update
+    updateCanvasSize()
 
-      // Determine the result before spinning
-      // This ensures the visual result will match what we report
-      spinResultRef.current = Math.floor(Math.random() * sections.length)
-      console.log(`Predetermined spin result index: ${spinResultRef.current}`)
-
-      // Calculate rotation to land on the predetermined result
-      // The pointer is at the top (PI * 3/2), so we need to rotate to position the result there
-      const sectionAngle = (2 * Math.PI) / sections.length
-      const baseRotations = 5 + Math.random() * 5 // 5-10 full rotations for effect
-
-      // Calculate the angle needed to position the selected section at the top
-      // We add sections.length to ensure positive modulo
-      const sectionOffset = (sections.length - spinResultRef.current) % sections.length
-      const targetAngle = baseRotations * 2 * Math.PI + sectionOffset * sectionAngle
-
-      targetRotationRef.current = targetAngle
-      console.log(`Target rotation: ${targetAngle} radians`)
-    }
-  }, [isSpinning, sections])
-
-  // Initialize and handle spinning
-  useEffect(() => {
     // Set up resize observer to handle container size changes
     if (!resizeObserverRef.current && canvasRef.current) {
       resizeObserverRef.current = new ResizeObserver(() => {
@@ -200,29 +199,92 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       }
     }
 
-    // Initial size update
-    updateCanvasSize()
-
-    // Handle spin start
-    if (isSpinning) {
-      // Reset animation values
-      startTimeRef.current = 0
-
-      // Start animation
-      requestRef.current = requestAnimationFrame(animate)
-    }
+    setIsInitialized(true)
 
     return () => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current)
-      }
-
       // Clean up resize observer
       if (resizeObserverRef.current) {
         resizeObserverRef.current.disconnect()
       }
-    }
-  }, [isSpinning, spinDuration, sections])
 
-  return <canvas ref={canvasRef} className="w-full h-full" style={{ touchAction: "none" }} />
+      // Cancel any ongoing animation
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [])
+
+  // Handle spinning state changes
+  useEffect(() => {
+    // Skip if not initialized yet
+    if (!isInitialized) return
+
+    // Handle spin start
+    if (isSpinning && !previousSpinningState.current) {
+      // Increment spin count
+      spinCountRef.current += 1
+      console.log(`Spin #${spinCountRef.current} started`)
+
+      // Mark that the wheel has spun at least once
+      hasSpunRef.current = true
+
+      // Reset result reported flag
+      resultReportedRef.current = false
+
+      // Reset animation start time
+      startTimeRef.current = 0
+
+      // Set a random target rotation (5-10 full rotations)
+      const fullRotations = 5 + Math.random() * 5
+      targetRotationRef.current = fullRotations * 2 * Math.PI
+
+      // Start animation
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+      animationFrameRef.current = requestAnimationFrame(animate)
+
+      console.log(`Animation started for spin #${spinCountRef.current}`)
+    }
+
+    // Handle spin end
+    if (previousSpinningState.current && !isSpinning && hasSpunRef.current && !resultReportedRef.current) {
+      console.log(`Spin #${spinCountRef.current} ended, determining result`)
+
+      // Get the winning section based on the final rotation
+      const { text, index } = getWinningSection(rotationRef.current)
+
+      // Log the result for debugging
+      const debugData = {
+        spinCount: spinCountRef.current,
+        finalRotation: rotationRef.current,
+        winningSection: text,
+        winningIndex: index,
+      }
+      console.log("Wheel result:", debugData)
+      setDebugInfo(debugData)
+
+      // Report the result
+      if (onResult) {
+        console.log(`Reporting result: ${text} (Spin #${spinCountRef.current})`)
+        onResult(text)
+        resultReportedRef.current = true
+      }
+    }
+
+    // Update previous spinning state
+    previousSpinningState.current = isSpinning
+  }, [isSpinning, isInitialized, sections, onResult, spinDuration])
+
+  return (
+    <>
+      <canvas ref={canvasRef} className="w-full h-full" style={{ touchAction: "none" }} />
+      {/* Debug info - uncomment for debugging */}
+      {/* {debugInfo && (
+        <div className="absolute bottom-0 left-0 bg-black/80 text-white text-xs p-2 max-w-xs overflow-auto">
+          <pre>{JSON.stringify(debugInfo, null, 2)}</pre>
+        </div>
+      )} */}
+    </>
+  )
 }

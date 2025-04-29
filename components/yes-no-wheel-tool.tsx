@@ -23,7 +23,8 @@ export function YesNoWheelTool() {
   const [wheelSize, setWheelSize] = useState({ width: 500, height: 500 })
   const [isClient, setIsClient] = useState(false)
   const spinCountRef = useRef(0)
-  const wheelResultRef = useRef<string | null>(null)
+  const hasInitializedRef = useRef(false)
+  const resultTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Yes/No wheel sections
   const sections = [
@@ -38,22 +39,25 @@ export function YesNoWheelTool() {
 
   // Load history and counts from localStorage
   useEffect(() => {
-    const savedHistory = localStorage.getItem("yesNoHistory")
-    if (savedHistory) {
-      try {
-        const parsedHistory = JSON.parse(savedHistory)
-        setHistory(parsedHistory)
+    if (!hasInitializedRef.current && typeof window !== "undefined") {
+      const savedHistory = localStorage.getItem("yesNoHistory")
+      if (savedHistory) {
+        try {
+          const parsedHistory = JSON.parse(savedHistory)
+          setHistory(parsedHistory)
 
-        // Calculate counts from history
-        const yes = parsedHistory.filter((item: any) => item.answer === "Yes").length
-        const no = parsedHistory.filter((item: any) => item.answer === "No").length
-        setYesCount(yes)
-        setNoCount(no)
-      } catch (e) {
-        console.error("Failed to parse history:", e)
+          // Calculate counts from history
+          const yes = parsedHistory.filter((item: any) => item.answer === "Yes").length
+          const no = parsedHistory.filter((item: any) => item.answer === "No").length
+          setYesCount(yes)
+          setNoCount(no)
+        } catch (e) {
+          console.error("Failed to parse history:", e)
+        }
       }
+      hasInitializedRef.current = true
     }
-  }, [])
+  }, [isClient])
 
   // Set wheel size based on screen size
   useEffect(() => {
@@ -75,65 +79,79 @@ export function YesNoWheelTool() {
 
   // Handle wheel result callback
   const handleWheelResult = (result: string) => {
-    wheelResultRef.current = result
-    console.log(`Wheel visually stopped at: ${result}`)
+    console.log(`Received wheel result: ${result} (Spin #${spinCountRef.current})`)
+
+    // Update the winner
+    setWinner(result)
+
+    // Update scoreboard counts
+    if (result === "Yes") {
+      setYesCount((prev) => prev + 1)
+    } else if (result === "No") {
+      setNoCount((prev) => prev + 1)
+    }
+
+    // Add to history
+    const newHistoryEntry = {
+      question,
+      answer: result,
+      timestamp: Date.now(),
+    }
+
+    const newHistory = [
+      newHistoryEntry,
+      ...history.slice(0, 19), // Keep only last 20 entries
+    ]
+
+    setHistory(newHistory)
+
+    // Save to localStorage
+    localStorage.setItem("yesNoHistory", JSON.stringify(newHistory))
+
+    // Trigger confetti effect
+    import("canvas-confetti").then((confetti) => {
+      confetti.default({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      })
+    })
+
+    // Play sound using our audio context provider
+    playSound("win")
+
+    // Clear any pending result timer
+    if (resultTimerRef.current) {
+      clearTimeout(resultTimerRef.current)
+      resultTimerRef.current = null
+    }
   }
 
   const handleSpin = () => {
     if (isSpinning) return
 
-    setIsSpinning(true)
-    setWinner(null)
-    wheelResultRef.current = null
-
     // Increment spin count for debugging
     spinCountRef.current += 1
-    console.log(`Spin #${spinCountRef.current} started`)
+    console.log(`Spin #${spinCountRef.current} started in YesNoWheelTool`)
 
-    // After spin duration, show the winner
+    // Reset winner and start spinning
+    setWinner(null)
+    setIsSpinning(true)
+
+    // After spin duration, stop the wheel
     setTimeout(() => {
-      try {
-        // Use the actual wheel result from the visual wheel
-        const answer = wheelResultRef.current || "Yes";
-        console.log(`Spin #${spinCountRef.current} final result: ${answer}`)
+      setIsSpinning(false)
+      console.log(`Wheel stopped spinning (Spin #${spinCountRef.current})`)
 
-        setWinner(answer)
-        setIsSpinning(false)
-
-        // Update counts based on the actual wheel result
-        if (answer === "Yes") {
-          console.log(`Spin #${spinCountRef.current}: Incrementing Yes count`)
-          setYesCount((prev) => prev + 1)
-        } else {
-          console.log(`Spin #${spinCountRef.current}: Incrementing No count`)
-          setNoCount((prev) => prev + 1)
+      // Set a backup timer to ensure we always show a result
+      // This is a safety measure in case the wheel component fails to report
+      resultTimerRef.current = setTimeout(() => {
+        if (!winner) {
+          console.log("Backup timer: No winner reported yet, forcing a random result")
+          const backupResult = Math.random() < 0.5 ? "Yes" : "No"
+          handleWheelResult(backupResult)
         }
-
-        // Add to history
-        const newHistory = [
-          { question, answer, timestamp: Date.now() },
-          ...history.slice(0, 19), // Keep only last 20 entries
-        ]
-
-        setHistory(newHistory)
-
-        // Save to localStorage
-        localStorage.setItem("yesNoHistory", JSON.stringify(newHistory))
-
-        // Trigger confetti effect
-        import("canvas-confetti").then((confetti) => {
-          confetti.default({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-          })
-        })
-
-        // Play sound using our audio context provider
-        playSound("win")
-      } catch (error) {
-        console.error("Error in spin result handling:", error)
-      }
+      }, 500) // Wait a bit longer than the wheel's internal timer
     }, spinDuration * 1000)
   }
 
@@ -144,6 +162,15 @@ export function YesNoWheelTool() {
     setHistory([])
     localStorage.removeItem("yesNoHistory")
   }
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (resultTimerRef.current) {
+        clearTimeout(resultTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">

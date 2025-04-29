@@ -23,6 +23,7 @@
   --input: 240 3.7% 15.9%;
   --ring: 300 100% 50%;
   --radius: 0.5rem;
+  --font-orbitron: var(--font-orbitron);
 }
 
 body {
@@ -36,4 +37,15 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.logo-text {
+  font-family: var(--font-orbitron);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #4ade80, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }

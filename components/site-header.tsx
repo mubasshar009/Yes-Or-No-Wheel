@@ -39,14 +39,14 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gradient-to-br from-gray-500 to-gray-700">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="relative h-9 w-9 overflow-hidden rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="h-4 w-4 rounded-full bg-white"></div>
               </div>
               <div className="absolute top-1/2 left-1/2 h-6 w-0.5 -translate-x-1/2 -translate-y-1/2 bg-white rotate-45"></div>
             </div>
-            <span className="text-xl font-bold text-white">Yes or No Wheel</span>
+            <span className="logo-text text-xl font-bold">Yes or No Wheel</span>
           </Link>
         </div>
 

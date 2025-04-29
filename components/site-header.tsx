@@ -1,8 +1,6 @@
 "use client"
-
-import { useState } from "react"
 import Link from "next/link"
-import { Share2, RotateCcw, Menu, PenToolIcon as Tool } from "lucide-react"
+import { Share2, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,16 +13,6 @@ import {
 import { toast } from "@/components/ui/use-toast"
 
 export function SiteHeader() {
-  const [savedWheels, setSavedWheels] = useState<any[]>([])
-
-  // Load saved wheels from localStorage
-  useState(() => {
-    if (typeof window !== "undefined") {
-      const wheels = JSON.parse(localStorage.getItem("savedWheels") || "[]")
-      setSavedWheels(wheels)
-    }
-  })
-
   const handleShare = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(window.location.href)
@@ -51,70 +39,10 @@ export function SiteHeader() {
         </div>
 
         <nav className="hidden md:flex items-center gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center gap-1 text-white">
-                <RotateCcw className="h-4 w-4" />
-                <span>Switch Wheel</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-zinc-900 border-zinc-800 text-white">
-              <DropdownMenuLabel>Saved Wheels</DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-zinc-800" />
-              {savedWheels.length > 0 ? (
-                savedWheels.map((wheel) => (
-                  <DropdownMenuItem
-                    key={wheel.id}
-                    className="cursor-pointer hover:bg-zinc-800"
-                    onClick={() => {
-                      localStorage.setItem("currentWheel", JSON.stringify(wheel))
-                      window.location.href = "/create"
-                    }}
-                  >
-                    {wheel.name}
-                  </DropdownMenuItem>
-                ))
-              ) : (
-                <DropdownMenuItem className="text-gray-400">No saved wheels</DropdownMenuItem>
-              )}
-              <DropdownMenuSeparator className="bg-zinc-800" />
-              <Link href="/templates">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Browse Templates</DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
           <Button variant="ghost" size="sm" className="flex items-center gap-1 text-white" onClick={handleShare}>
             <Share2 className="h-4 w-4" />
             <span>Share</span>
           </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center gap-1 text-white">
-                <Tool className="h-4 w-4" />
-                <span>Tools</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-zinc-900 border-zinc-800 text-white">
-              <Link href="/">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Yes or No Wheel</DropdownMenuItem>
-              </Link>
-              <Link href="/tools/name-picker">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Name Picker</DropdownMenuItem>
-              </Link>
-              <Link href="/tools/random-number">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Random Number</DropdownMenuItem>
-              </Link>
-              <Link href="/tools/team-generator">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Team Generator</DropdownMenuItem>
-              </Link>
-              <DropdownMenuSeparator className="bg-zinc-800" />
-              <Link href="/create">
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">Custom Wheel Creator</DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </nav>
 
         <DropdownMenu>
@@ -126,17 +54,9 @@ export function SiteHeader() {
           <DropdownMenuContent align="end" className="w-56 bg-zinc-900 border-zinc-800 text-white">
             <DropdownMenuLabel>Menu</DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-zinc-800" />
-            <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Switch Wheel
-            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800" onClick={handleShare}>
               <Share2 className="h-4 w-4 mr-2" />
               Share
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer hover:bg-zinc-800">
-              <Tool className="h-4 w-4 mr-2" />
-              Tools
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,6 +1,4 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { YesNoWheelTool } from "@/components/yes-no-wheel-tool"
 
 export default function Home() {
@@ -22,33 +20,6 @@ export default function Home() {
             <div className="mb-16 max-w-[1000px] mx-auto">
               <YesNoWheelTool />
             </div>
-
-            {/* Browse Templates Section */}
-            <div className="flex flex-col items-center space-y-6 mt-16 border-t border-zinc-800 pt-16">
-              <div className="space-y-2 text-center">
-                <h2 className="text-3xl font-bold tracking-tighter">Create Custom Wheels</h2>
-                <p className="max-w-[600px] text-gray-400 md:text-lg">
-                  Need more than Yes or No? Create fully customizable wheels for any purpose.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="/create">
-                  <Button className="bg-white text-black hover:bg-gray-200">
-                    Create a Custom Wheel
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/templates">
-                  <Button variant="outline" className="border-white text-white hover:bg-white/10">
-                    Browse Templates
-                  </Button>
-                </Link>
-              </div>
-              <div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px]">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 blur-xl opacity-20"></div>
-                <WheelPreview />
-              </div>
-            </div>
           </div>
         </section>
 
@@ -58,7 +29,7 @@ export default function Home() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
                 <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Everything you need to make decisions and create custom wheels
+                  Everything you need to make yes or no decisions quickly
                 </p>
               </div>
             </div>
@@ -192,14 +163,6 @@ export default function Home() {
                   </div>
 
                   <div>
-                    <h4 className="text-xl font-semibold">Can I create a wheel with more than Yes/No options?</h4>
-                    <p>
-                      Click on "Create a Custom Wheel" to build wheels with as many options as you need. You can
-                      customize the text, colors, and number of sections to suit any decision-making scenario.
-                    </p>
-                  </div>
-
-                  <div>
                     <h4 className="text-xl font-semibold">Is my question history private?</h4>
                     <p>
                       Yes, your question history is stored locally on your device and is not sent to any servers. Your
@@ -216,11 +179,7 @@ export default function Home() {
                   that the outcome is completely random and unbiased.
                 </p>
 
-                <p>
-                  Try the Yes or No Wheel today and experience how it can simplify your decision-making process. For
-                  more complex decisions, explore our custom wheel creator to build wheels with multiple options
-                  tailored to your specific needs.
-                </p>
+                <p>Try the Yes or No Wheel today and experience how it can simplify your decision-making process.</p>
               </article>
             </div>
           </div>
@@ -244,30 +203,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
-  )
-}
-
-function WheelPreview() {
-  return (
-    <div className="relative w-full h-full">
-      <div className="absolute inset-0 rounded-full overflow-hidden border-4 border-white/20">
-        <div className="absolute w-full h-full">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute top-0 left-0 w-full h-full origin-bottom-center"
-              style={{
-                transform: `rotate(${i * 45}deg)`,
-                clipPath: "polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)",
-                backgroundColor: i % 2 === 0 ? "#9333ea" : "#ec4899",
-              }}
-            ></div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[24px] border-l-transparent border-r-transparent border-b-white"></div>
     </div>
   )
 }
@@ -316,62 +251,6 @@ const features = [
     ),
   },
   {
-    title: "Custom Wheels",
-    description: "Create your own wheels with multiple options for more complex decisions.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-6 w-6"
-      >
-        <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
-        <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
-        <path d="M12 2v2"></path>
-        <path d="M12 22v-2"></path>
-        <path d="m17 20.66-1-1.73"></path>
-        <path d="M11 10.27 7 3.34"></path>
-        <path d="m20.66 17-1.73-1"></path>
-        <path d="m3.34 7 1.73 1"></path>
-        <path d="M14 12h8"></path>
-        <path d="M2 12h2"></path>
-        <path d="m20.66 7-1.73 1"></path>
-        <path d="m3.34 17 1.73-1"></path>
-        <path d="m17 3.34-1 1.73"></path>
-        <path d="m7 20.66-1-1.73"></path>
-      </svg>
-    ),
-  },
-  {
-    title: "Templates Gallery",
-    description: "Choose from pre-built templates like Name Picker, Magic 8-Ball, and more.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-6 w-6"
-      >
-        <rect width="7" height="7" x="3" y="3" rx="1"></rect>
-        <rect width="7" height="7" x="14" y="3" rx="1"></rect>
-        <rect width="7" height="7" x="14" y="14" rx="1"></rect>
-        <rect width="7" height="7" x="3" y="14" rx="1"></rect>
-      </svg>
-    ),
-  },
-  {
     title: "Celebration Effects",
     description: "Enjoy confetti explosions and sound effects when the wheel stops.",
     icon: (
@@ -397,6 +276,29 @@ const features = [
     ),
   },
   {
+    title: "Scoreboard",
+    description: "Track your Yes and No results over time with our interactive scoreboard.",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+      >
+        <path d="M2 20h20"></path>
+        <path d="M5 20V8.2a1.2 1.2 0 0 1 1.2-1.2h1.6a1.2 1.2 0 0 1 1.2 1.2V20"></path>
+        <path d="M10 20V4.2a1.2 1.2 0 0 1 1.2-1.2h1.6a1.2 1.2 0 0 1 1.2 1.2V20"></path>
+        <path d="M15 20v-8.2a1.2 1.2 0 0 1 1.2-1.2h1.6a1.2 1.2 0 0 1 1.2 1.2V20"></path>
+      </svg>
+    ),
+  },
+  {
     title: "Mobile Friendly",
     description: "Make decisions on the go with our fully responsive design.",
     icon: (
@@ -414,6 +316,27 @@ const features = [
       >
         <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
         <path d="M12 18h.01"></path>
+      </svg>
+    ),
+  },
+  {
+    title: "Completely Free",
+    description: "No sign-up, no subscription, just a free tool to help with your decisions.",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+      >
+        <path d="M12 2v20"></path>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
       </svg>
     ),
   },

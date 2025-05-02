@@ -23,25 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Add your Google Analytics script */}
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-2JQ4Z2GLF0"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-2JQ4Z2GLF0');
-            `,
-          }}
-        />
-      </head>
+      
       <body className={`${inter.className} ${orbitron.variable}`}>
         <AudioContextProvider>
           <SiteHeader />

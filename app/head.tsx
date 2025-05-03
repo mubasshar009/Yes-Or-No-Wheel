@@ -8,7 +8,7 @@ export default function Head() {
       />
       <meta
         name="keywords"
-        content="yes or no wheel, decision wheel, random wheel spinner, yes no decision maker, online decision tool"
+        content="yes or no wheel, spin the wheel yes or no, yes or no wheel decide, yes or no, yes and no wheel"
       />
       <meta property="og:title" content="Yes or No Wheel - Make Quick Decisions | Free Online Decision Tool" />
       <meta

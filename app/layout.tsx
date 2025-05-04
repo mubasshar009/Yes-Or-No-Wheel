@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Orbitron } from "next/font/google"
+import Script from "next/script"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
 import { AudioContextProvider } from "@/components/audio-context-provider"
@@ -23,7 +24,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-2JQ4Z2GLF0" />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2JQ4Z2GLF0');
+          `}
+        </Script>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#A855F7" />
+      </head>
       <body className={`${inter.className} ${orbitron.variable}`}>
         <AudioContextProvider>
           <SiteHeader />

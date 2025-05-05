@@ -88,49 +88,48 @@ export default function Home() {
                 <h3 className="text-2xl font-bold mt-8 mb-4">Wheel Customization</h3>
 
                 <p>
-                  You can customize the wheel either by Customizing the title or by Scoreboard reset. By default, 
-                  we added your question “Should I do it?” for binary decisions. You can customize the decision wheel 
-                  title as you want. Also, we stored your decision history and you can reset it by using the reset button.
+                  You can customize the wheel either by Customizing the title or by Scoreboard reset. By default, we
+                  added your question “Should I do it?” for binary decisions. You can customize the decision wheel title
+                  as you want. Also, we stored your decision history and you can reset it by using the reset button.
                 </p>
-                  
-                <p>
-                  <strong>Customized Title</strong> You can change the title of the Yes No generator to make it more personalized. For example, 
-                  if you are planning to go outside for dinner and you have a quick question in mind, should I text 
-                  him yes or no? So in this case, you can click the default title and change it to your personalized 
-                  question for your decision. 
-                  </p>
-                  <h3 className="text-2xl font-bold mt-8 mb-4">Scoreboard</h3>
 
-                  <p>
-                  To understand you better we added a Scoreboard for each Wheel spin, So you don’t need to 
-                    remember exactly how many times the answer was Yes or No. Each time the wheel spins it will 
-                    count the answer yes or no. To make the spinner more engaging we added green color for yes 
-                    and red for no. If you want to refresh your results then just click on the reset button.
-                  </p>
-                
+                <p>
+                  <strong>Customized Title</strong> You can change the title of the Yes No generator to make it more
+                  personalized. For example, if you are planning to go outside for dinner and you have a quick question
+                  in mind, should I text him yes or no? So in this case, you can click the default title and change it
+                  to your personalized question for your decision. 
+                </p>
+                <h3 className="text-2xl font-bold mt-8 mb-4">Scoreboard</h3>
+
+                <p>
+                  To understand you better we added a Scoreboard for each Wheel spin, So you don’t need to remember
+                  exactly how many times the answer was Yes or No. Each time the wheel spins it will count the answer
+                  yes or no. To make the spinner more engaging we added green color for yes and red for no. If you want
+                  to refresh your results then just click on the reset button.
+                </p>
+
                 <h3 className="text-2xl font-bold mt-8 mb-4">Share Results</h3>
 
-                  <p>
-                  You can share your final results with your friends by taking a screenshot of 
-                    the scoreboard. You can also share your results by copying the URL of the page 
-                    because we store your results locally on your device.
-                  </p>
-                
+                <p>
+                  You can share your final results with your friends by taking a screenshot of the scoreboard. You can
+                  also share your results by copying the URL of the page because we store your results locally on your
+                  device.
+                </p>
+
                 <h3 className="text-2xl font-bold mt-8 mb-4">Mobile Friendly</h3>
 
-                  <p>
-                  We have designed this decision spinner to provide a better user experience. 
-                    This tool layout is responsive, so whether you use a PC, Tablet, or phone, 
-                    you will get an amazing experience.
-                  </p>
+                <p>
+                  We have designed this decision spinner to provide a better user experience. This tool layout is
+                  responsive, so whether you use a PC, Tablet, or phone, you will get an amazing experience.
+                </p>
 
                 <h3 className="text-2xl font-bold mt-8 mb-4">Celebration Effect</h3>
 
-                  <p>
-                  After the wheel stops, you will see amazing confetti explosions and sound effects for each of your 
-                    yes or no decisions. These little celebration confetti explosion animations give you confidence 
-                    in your decisions. 
-                  </p>
+                <p>
+                  After the wheel stops, you will see amazing confetti explosions and sound effects for each of your yes
+                  or no decisions. These little celebration confetti explosion animations give you confidence in your
+                  decisions. 
+                </p>
 
                 <h3 className="text-2xl font-bold mt-8 mb-4">Popular Uses for the Yes or No Wheel</h3>
 
@@ -185,19 +184,24 @@ export default function Home() {
 
                 <ol>
                   <li>
-                    <strong>Oversimplified Choices</strong> - For Some decisions, you may require deeper thought and context that a simple spinner with 50/50 results can't provide.
+                    <strong>Oversimplified Choices</strong> - For Some decisions, you may require deeper thought and
+                    context that a simple spinner with 50/50 results can't provide.
                   </li>
                   <li>
-                    <strong>Overreliance on Randomness</strong> - If you use our wheel more often for your binary decision it will reduce your confidence in making decisions in your life.
+                    <strong>Overreliance on Randomness</strong> - If you use our wheel more often for your binary
+                    decision it will reduce your confidence in making decisions in your life.
                   </li>
                   <li>
-                    <strong>Not Always Practical </strong> - Because this wheel is a just programming tool no emotional, ethical, or situational complexities are attached to this. 
+                    <strong>Not Always Practical </strong> - Because this wheel is a just programming tool no emotional,
+                    ethical, or situational complexities are attached to this.
                   </li>
                   <li>
-                    <strong>May Delay Growth</strong> - This tool can hinder your personal development over time because you are not making decisions on your own.
+                    <strong>May Delay Growth</strong> - This tool can hinder your personal development over time because
+                    you are not making decisions on your own.
                   </li>
                   <li>
-                    <strong>No Custom Logic</strong> - All results are purely random 50/50 don't consider factors like priority, probability, or relevance.
+                    <strong>No Custom Logic</strong> - All results are purely random 50/50 don't consider factors like
+                    priority, probability, or relevance.
                   </li>
                 </ol>
 
@@ -232,20 +236,22 @@ export default function Home() {
                   <div>
                     <h4 className="text-xl font-semibold">Is this yes no spinner free to use?</h4>
                     <p>
-                      Yes, our decision wheel spinner is completely free to use. You don’t need to sign up or any subscription. 
-                      It’s just a free tool to help you with your decision. 
+                      Yes, our decision wheel spinner is completely free to use. You don’t need to sign up or any
+                      subscription. It’s just a free tool to help you with your decision. 
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-xl font-semibold">Can we use Yes or No Wheel in the Classroom or in the office?</h4>
+                    <h4 className="text-xl font-semibold">
+                      Can we use Yes or No Wheel in the Classroom or in the office?
+                    </h4>
                     <p>
-                      Yes, you can use our yes-no spinner wheel in the classroom if you are stuck in a decision like Should I complete
-                      this task? Or should I complete my Biology homework first? In the office, you can prioritize your tasks similarly 
-                      like should I complete task 1 first? 
+                      Yes, you can use our yes-no spinner wheel in the classroom if you are stuck in a decision like
+                      Should I complete this task? Or should I complete my Biology homework first? In the office, you
+                      can prioritize your tasks similarly like should I complete task 1 first? 
                     </p>
                   </div>
-                  
+
                   <div>
                     <h4 className="text-xl font-semibold">Is my question history private?</h4>
                     <p>

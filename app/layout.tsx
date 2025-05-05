@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Yes or No Wheel - Make Quick Decisions",
   description:
     "Create and spin customizable wheels for decisions, games, or giveaways. Save your wheels, use templates, and enjoy animated spinning effects.",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -37,6 +37,8 @@ export default function RootLayout({
         </Script>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#A855F7" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body className={`${inter.className} ${orbitron.variable}`}>
         <AudioContextProvider>

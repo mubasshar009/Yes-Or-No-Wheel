@@ -39,7 +39,7 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     const height = canvas.height
     const centerX = width / 2
     const centerY = height / 2
-    const radius = Math.min(width, height) / 2 - 10
+    const radius = Math.max(1, Math.min(width, height) / 2 - 10)
 
     // Clear canvas
     ctx.clearRect(0, 0, width, height)

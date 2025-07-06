@@ -16,11 +16,9 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Yes/No Wheel Tool - Centered */}
-            <div className="mb-16 w-full flex justify-center">
-              <div className="w-full max-w-7xl">
-                <YesNoWheelTool />
-              </div>
+            {/* Yes/No Wheel Tool */}
+            <div className="mb-16 max-w-[1000px] mx-auto">
+              <YesNoWheelTool />
             </div>
           </div>
         </section>
@@ -63,7 +61,7 @@ export default function Home() {
 
                 <p>
                   The <strong>Yes or No Wheel</strong> is a simple yet powerful decision-making tool designed to help
-                  you make quick binary choices. When you're stuck between two options and can\'t decide, our random
+                  you make quick binary choices. When you're stuck between two options and can't decide, our random
                   wheel spinner provides an unbiased answer.
                 </p>
 

@@ -174,110 +174,224 @@ export function YesNoWheelTool() {
   }, [])
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
-      <div className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl p-6">
-        <div className="mb-6 w-full max-w-md">
-          <Label htmlFor="question" className="text-lg mb-2 block">
-            Your Question:
-          </Label>
-          <Input
-            id="question"
-            className="text-center text-xl font-bold bg-zinc-800 border-zinc-700 text-white"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Type your question here..."
-          />
-        </div>
-
-        <div
-          ref={wheelContainerRef}
-          className="relative mx-auto"
-          style={{
-            width: `${wheelSize.width}px`,
-            height: `${wheelSize.height}px`,
-            maxWidth: "100%",
-            aspectRatio: "1/1",
-          }}
-        >
-          {isClient && (
-            <Wheel
-              sections={sections}
-              isSpinning={isSpinning}
-              spinDuration={spinDuration}
-              onResult={handleWheelResult}
+    <div className="w-full">
+      {/* Mobile Layout */}
+      <div className="block lg:hidden">
+        <div className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl p-6 mb-6">
+          <div className="mb-6 w-full max-w-md">
+            <Label htmlFor="question" className="text-lg mb-2 block">
+              Your Question:
+            </Label>
+            <Input
+              id="question"
+              className="text-center text-xl font-bold bg-zinc-800 border-zinc-700 text-white"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question here..."
             />
+          </div>
+
+          <div
+            ref={wheelContainerRef}
+            className="relative mx-auto"
+            style={{
+              width: `${wheelSize.width}px`,
+              height: `${wheelSize.height}px`,
+              maxWidth: "100%",
+              aspectRatio: "1/1",
+            }}
+          >
+            {isClient && (
+              <Wheel
+                sections={sections}
+                isSpinning={isSpinning}
+                spinDuration={spinDuration}
+                onResult={handleWheelResult}
+              />
+            )}
+          </div>
+
+          {winner && !isSpinning && (
+            <div className="mt-6 text-center">
+              <h2 className="text-xl font-bold">Answer:</h2>
+              <p className={`text-3xl font-bold ${winner === "Yes" ? "text-green-400" : "text-red-400"}`}>{winner}</p>
+            </div>
           )}
+
+          <Button
+            className="mt-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-6 text-lg"
+            onClick={handleSpin}
+            disabled={isSpinning}
+          >
+            {isSpinning ? "Spinning..." : "Spin the Wheel"}
+          </Button>
         </div>
 
-        {winner && !isSpinning && (
-          <div className="mt-6 text-center">
-            <h2 className="text-xl font-bold">Answer:</h2>
-            <p className={`text-3xl font-bold ${winner === "Yes" ? "text-green-400" : "text-red-400"}`}>{winner}</p>
-          </div>
-        )}
+        <div className="space-y-6">
+          <Scoreboard showReset={true} yesCount={yesCount} noCount={noCount} onReset={handleReset} />
 
-        <Button
-          className="mt-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-6 text-lg"
-          onClick={handleSpin}
-          disabled={isSpinning}
-        >
-          {isSpinning ? "Spinning..." : "Spin the Wheel"}
-        </Button>
+          <Tabs defaultValue="history">
+            <TabsList className="grid grid-cols-2 mb-4">
+              <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="how-to">How to Use</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="history">
+              <Card className="bg-zinc-900 border-zinc-800">
+                <CardContent className="pt-6">
+                  {history.length === 0 ? (
+                    <p className="text-gray-400 text-center py-4">No history yet. Spin the wheel!</p>
+                  ) : (
+                    <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                      {history.map((item, index) => (
+                        <div key={index} className="border border-zinc-800 rounded-lg p-3">
+                          <p className="text-sm text-gray-400">{new Date(item.timestamp).toLocaleString()}</p>
+                          <p className="font-medium">{item.question}</p>
+                          <p className={`font-bold ${item.answer === "Yes" ? "text-green-400" : "text-red-400"}`}>
+                            {item.answer}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="how-to">
+              <Card className="bg-zinc-900 border-zinc-800">
+                <CardContent className="pt-6 space-y-4">
+                  <p>
+                    <strong>1.</strong> Type your yes/no question in the input field
+                  </p>
+                  <p>
+                    <strong>2.</strong> Click the "Spin the Wheel" button
+                  </p>
+                  <p>
+                    <strong>3.</strong> Wait for the wheel to stop spinning
+                  </p>
+                  <p>
+                    <strong>4.</strong> Get your answer and make your decision!
+                  </p>
+                  <p className="text-sm text-gray-400 mt-4">
+                    The wheel gives a perfect 50/50 chance for Yes or No, making it completely fair and random.
+                  </p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
 
-      <div className="space-y-6">
-        <Scoreboard showReset={true} yesCount={yesCount} noCount={noCount} onReset={handleReset} />
+      {/* Desktop Layout - Centered */}
+      <div className="hidden lg:block">
+        <div className="flex justify-center">
+          <div className="grid grid-cols-[1fr_400px] gap-8 max-w-6xl w-full">
+            <div className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl p-6">
+              <div className="mb-6 w-full max-w-md">
+                <Label htmlFor="question-desktop" className="text-lg mb-2 block">
+                  Your Question:
+                </Label>
+                <Input
+                  id="question-desktop"
+                  className="text-center text-xl font-bold bg-zinc-800 border-zinc-700 text-white"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Type your question here..."
+                />
+              </div>
 
-        <Tabs defaultValue="history">
-          <TabsList className="grid grid-cols-2 mb-4">
-            <TabsTrigger value="history">History</TabsTrigger>
-            <TabsTrigger value="how-to">How to Use</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="history">
-            <Card className="bg-zinc-900 border-zinc-800">
-              <CardContent className="pt-6">
-                {history.length === 0 ? (
-                  <p className="text-gray-400 text-center py-4">No history yet. Spin the wheel!</p>
-                ) : (
-                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                    {history.map((item, index) => (
-                      <div key={index} className="border border-zinc-800 rounded-lg p-3">
-                        <p className="text-sm text-gray-400">{new Date(item.timestamp).toLocaleString()}</p>
-                        <p className="font-medium">{item.question}</p>
-                        <p className={`font-bold ${item.answer === "Yes" ? "text-green-400" : "text-red-400"}`}>
-                          {item.answer}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+              <div
+                className="relative mx-auto"
+                style={{
+                  width: `${wheelSize.width}px`,
+                  height: `${wheelSize.height}px`,
+                  maxWidth: "100%",
+                  aspectRatio: "1/1",
+                }}
+              >
+                {isClient && (
+                  <Wheel
+                    sections={sections}
+                    isSpinning={isSpinning}
+                    spinDuration={spinDuration}
+                    onResult={handleWheelResult}
+                  />
                 )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
 
-          <TabsContent value="how-to">
-            <Card className="bg-zinc-900 border-zinc-800">
-              <CardContent className="pt-6 space-y-4">
-                <p>
-                  <strong>1.</strong> Type your yes/no question in the input field
-                </p>
-                <p>
-                  <strong>2.</strong> Click the "Spin the Wheel" button
-                </p>
-                <p>
-                  <strong>3.</strong> Wait for the wheel to stop spinning
-                </p>
-                <p>
-                  <strong>4.</strong> Get your answer and make your decision!
-                </p>
-                <p className="text-sm text-gray-400 mt-4">
-                  The wheel gives a perfect 50/50 chance for Yes or No, making it completely fair and random.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              {winner && !isSpinning && (
+                <div className="mt-6 text-center">
+                  <h2 className="text-xl font-bold">Answer:</h2>
+                  <p className={`text-3xl font-bold ${winner === "Yes" ? "text-green-400" : "text-red-400"}`}>{winner}</p>
+                </div>
+              )}
+
+              <Button
+                className="mt-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-6 text-lg"
+                onClick={handleSpin}
+                disabled={isSpinning}
+              >
+                {isSpinning ? "Spinning..." : "Spin the Wheel"}
+              </Button>
+            </div>
+
+            <div className="space-y-6">
+              <Scoreboard showReset={true} yesCount={yesCount} noCount={noCount} onReset={handleReset} />
+
+              <Tabs defaultValue="history">
+                <TabsList className="grid grid-cols-2 mb-4">
+                  <TabsTrigger value="history">History</TabsTrigger>
+                  <TabsTrigger value="how-to">How to Use</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="history">
+                  <Card className="bg-zinc-900 border-zinc-800">
+                    <CardContent className="pt-6">
+                      {history.length === 0 ? (
+                        <p className="text-gray-400 text-center py-4">No history yet. Spin the wheel!</p>
+                      ) : (
+                        <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                          {history.map((item, index) => (
+                            <div key={index} className="border border-zinc-800 rounded-lg p-3">
+                              <p className="text-sm text-gray-400">{new Date(item.timestamp).toLocaleString()}</p>
+                              <p className="font-medium">{item.question}</p>
+                              <p className={`font-bold ${item.answer === "Yes" ? "text-green-400" : "text-red-400"}`}>
+                                {item.answer}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="how-to">
+                  <Card className="bg-zinc-900 border-zinc-800">
+                    <CardContent className="pt-6 space-y-4">
+                      <p>
+                        <strong>1.</strong> Type your yes/no question in the input field
+                      </p>
+                      <p>
+                        <strong>2.</strong> Click the "Spin the Wheel" button
+                      </p>
+                      <p>
+                        <strong>3.</strong> Wait for the wheel to stop spinning
+                      </p>
+                      <p>
+                        <strong>4.</strong> Get your answer and make your decision!
+                      </p>
+                      <p className="text-sm text-gray-400 mt-4">
+                        The wheel gives a perfect 50/50 chance for Yes or No, making it completely fair and random.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

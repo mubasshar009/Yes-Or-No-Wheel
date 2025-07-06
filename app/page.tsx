@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-black text-white">
       <main className="flex-1">
         <section className="w-full py-12 md:py-16 lg:py-20">
-          <div className="container px-4 md:px-6">
+          <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center text-center space-y-4 mb-8">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
                 Yes or No Wheel - Make Quick Decisions
@@ -16,15 +16,17 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Yes/No Wheel Tool */}
-            <div className="mb-16 max-w-[1000px] mx-auto">
-              <YesNoWheelTool />
+            {/* Yes/No Wheel Tool - Centered */}
+            <div className="mb-16 w-full flex justify-center">
+              <div className="w-full max-w-7xl">
+                <YesNoWheelTool />
+              </div>
             </div>
           </div>
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32 bg-zinc-900">
-          <div className="container px-4 md:px-6">
+          <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
@@ -52,7 +54,7 @@ export default function Home() {
 
         {/* SEO Content Section */}
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className="container px-4 md:px-6 mx-auto">
             <div className="mx-auto max-w-3xl">
               <article className="prose prose-invert prose-lg max-w-none">
                 <h2 id="about-yes-no-wheel" className="text-3xl font-bold tracking-tighter mb-6">
@@ -89,7 +91,7 @@ export default function Home() {
 
                 <p>
                   You can customize the wheel either by Customizing the title or by Scoreboard reset. By default, we
-                  added your question “Should I do it?” for binary decisions. You can customize the decision wheel title
+                  added your question "Should I do it?" for binary decisions. You can customize the decision wheel title
                   as you want. Also, we stored your decision history and you can reset it by using the reset button.
                 </p>
 
@@ -97,12 +99,12 @@ export default function Home() {
                   <strong>Customized Title</strong> You can change the title of the Yes No generator to make it more
                   personalized. For example, if you are planning to go outside for dinner and you have a quick question
                   in mind, should I text him yes or no? So in this case, you can click the default title and change it
-                  to your personalized question for your decision. 
+                  to your personalized question for your decision. 
                 </p>
                 <h3 className="text-2xl font-bold mt-8 mb-4">Scoreboard</h3>
 
                 <p>
-                  To understand you better we added a Scoreboard for each Wheel spin, So you don’t need to remember
+                  To understand you better we added a Scoreboard for each Wheel spin, So you don't need to remember
                   exactly how many times the answer was Yes or No. Each time the wheel spins it will count the answer
                   yes or no. To make the spinner more engaging we added green color for yes and red for no. If you want
                   to refresh your results then just click on the reset button.
@@ -128,7 +130,7 @@ export default function Home() {
                 <p>
                   After the wheel stops, you will see amazing confetti explosions and sound effects for each of your yes
                   or no decisions. These little celebration confetti explosion animations give you confidence in your
-                  decisions. 
+                  decisions. 
                 </p>
 
                 <h3 className="text-2xl font-bold mt-8 mb-4">Popular Uses for the Yes or No Wheel</h3>
@@ -236,8 +238,8 @@ export default function Home() {
                   <div>
                     <h4 className="text-xl font-semibold">Is this yes no spinner free to use?</h4>
                     <p>
-                      Yes, our decision wheel spinner is completely free to use. You don’t need to sign up or any
-                      subscription. It’s just a free tool to help you with your decision. 
+                      Yes, our decision wheel spinner is completely free to use. You don't need to sign up or any
+                      subscription. It's just a free tool to help you with your decision. 
                     </p>
                   </div>
 
@@ -248,7 +250,7 @@ export default function Home() {
                     <p>
                       Yes, you can use our yes-no spinner wheel in the classroom if you are stuck in a decision like
                       Should I complete this task? Or should I complete my Biology homework first? In the office, you
-                      can prioritize your tasks similarly like should I complete task 1 first? 
+                      can prioritize your tasks similarly like should I complete task 1 first? 
                     </p>
                   </div>
 

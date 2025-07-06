@@ -61,7 +61,7 @@ export default function Home() {
 
                 <p>
                   The <strong>Yes or No Wheel</strong> is a simple yet powerful decision-making tool designed to help
-                  you make quick binary choices. When you're stuck between two options and can't decide, our random
+                  you make quick binary choices. When you're stuck between two options and can\'t decide, our random
                   wheel spinner provides an unbiased answer.
                 </p>
 

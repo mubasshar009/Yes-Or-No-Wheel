@@ -37,19 +37,9 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
 
     const width = canvas.width
     const height = canvas.height
-    
-    // Ensure we have valid dimensions before proceeding
-    if (width <= 0 || height <= 0) {
-      console.warn("Canvas has invalid dimensions:", { width, height })
-      return
-    }
-
     const centerX = width / 2
     const centerY = height / 2
-    
-    // Calculate radius with better safeguards
-    const minDimension = Math.min(width, height)
-    const radius = Math.max(20, minDimension / 2 - 20) // Ensure minimum radius of 20px and padding of 20px
+    const radius = Math.max(1, Math.min(width, height) / 2 - 10)
 
     // Clear canvas
     ctx.clearRect(0, 0, width, height)
@@ -79,9 +69,8 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       ctx.textAlign = "right"
       ctx.fillStyle = "#ffffff"
 
-      // Scale font size based on text length and radius
-      const maxFontSize = Math.min(18, radius / 8)
-      const fontSize = Math.min(maxFontSize, 240 / Math.max(section.text.length, 5))
+      // Scale font size based on text length
+      const fontSize = Math.min(18, 240 / Math.max(section.text.length, 5))
       ctx.font = `bold ${fontSize}px Arial`
 
       // Add text shadow for better readability
@@ -91,19 +80,17 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
       ctx.restore()
     })
 
-    // Draw center circle with appropriate size
-    const centerRadius = Math.min(15, radius / 10)
+    // Draw center circle
     ctx.beginPath()
-    ctx.arc(centerX, centerY, centerRadius, 0, 2 * Math.PI)
+    ctx.arc(centerX, centerY, 15, 0, 2 * Math.PI)
     ctx.fillStyle = "#ffffff"
     ctx.fill()
 
-    // Draw pointer with appropriate size
-    const pointerSize = Math.min(10, radius / 15)
+    // Draw pointer
     ctx.beginPath()
-    ctx.moveTo(centerX, centerY - radius - pointerSize)
-    ctx.lineTo(centerX - pointerSize, centerY - radius + pointerSize)
-    ctx.lineTo(centerX + pointerSize, centerY - radius + pointerSize)
+    ctx.moveTo(centerX, centerY - radius - 10)
+    ctx.lineTo(centerX - 10, centerY - radius + 10)
+    ctx.lineTo(centerX + 10, centerY - radius + 10)
     ctx.closePath()
     ctx.fillStyle = "#ffffff"
     ctx.fill()
@@ -221,53 +208,31 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     const parentWidth = parent.clientWidth
     const parentHeight = parent.clientHeight
 
-    // Ensure we have valid parent dimensions
-    if (parentWidth <= 0 || parentHeight <= 0) {
-      console.warn("Parent container has invalid dimensions:", { parentWidth, parentHeight })
-      return
-    }
-
     // Set canvas dimensions to match parent (maintaining 1:1 aspect ratio)
     const size = Math.min(parentWidth, parentHeight)
 
-    // Ensure minimum size
-    const minSize = 100
-    const finalSize = Math.max(minSize, size)
-
     // Set the actual canvas dimensions, accounting for device pixel ratio
     const dpr = window.devicePixelRatio || 1
-    canvas.width = finalSize * dpr
-    canvas.height = finalSize * dpr
+    canvas.width = size * dpr
+    canvas.height = size * dpr
 
     // Set the display size
-    canvas.style.width = `${finalSize}px`
-    canvas.style.height = `${finalSize}px`
+    canvas.style.width = `${size}px`
+    canvas.style.height = `${size}px`
 
-    // Scale the context to ensure correct drawing operations
-    const ctx = canvas.getContext("2d")
-    if (ctx) {
-      ctx.scale(dpr, dpr)
-    }
-
-    // Initial draw only if we have valid dimensions
-    if (canvas.width > 0 && canvas.height > 0) {
-      drawWheel(rotationRef.current)
-    }
+    // Initial draw
+    drawWheel(rotationRef.current)
   }
 
   // Initialize the wheel
   useEffect(() => {
-    // Wait a bit to ensure the container is properly sized
-    const initTimer = setTimeout(() => {
-      updateCanvasSize()
-      setIsInitialized(true)
-    }, 100)
+    // Initial size update
+    updateCanvasSize()
 
     // Set up resize observer to handle container size changes
     if (!resizeObserverRef.current && canvasRef.current) {
       resizeObserverRef.current = new ResizeObserver(() => {
-        // Debounce resize updates
-        setTimeout(updateCanvasSize, 50)
+        updateCanvasSize()
       })
 
       const parent = canvasRef.current.parentElement
@@ -285,10 +250,9 @@ export function Wheel({ sections, isSpinning, spinDuration, onResult }: WheelPro
     }
 
     window.addEventListener("keydown", handleKeyDown)
+    setIsInitialized(true)
 
     return () => {
-      clearTimeout(initTimer)
-      
       // Clean up resize observer
       if (resizeObserverRef.current) {
         resizeObserverRef.current.disconnect()

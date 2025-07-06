@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-black text-white">
       <main className="flex-1">
         <section className="w-full py-12 md:py-16 lg:py-20">
-          <div className="container px-4 md:px-6 mx-auto">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4 mb-8">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
                 Yes or No Wheel - Make Quick Decisions
@@ -26,7 +26,7 @@ export default function Home() {
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32 bg-zinc-900">
-          <div className="container px-4 md:px-6 mx-auto">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
@@ -54,7 +54,7 @@ export default function Home() {
 
         {/* SEO Content Section */}
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 mx-auto">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
             <div className="mx-auto max-w-3xl">
               <article className="prose prose-invert prose-lg max-w-none">
                 <h2 id="about-yes-no-wheel" className="text-3xl font-bold tracking-tighter mb-6">
@@ -63,7 +63,7 @@ export default function Home() {
 
                 <p>
                   The <strong>Yes or No Wheel</strong> is a simple yet powerful decision-making tool designed to help
-                  you make quick binary choices. When you're stuck between two options and can\'t decide, our random
+                  you make quick binary choices. When you're stuck between two options and can't decide, our random
                   wheel spinner provides an unbiased answer.
                 </p>
 
@@ -278,20 +278,22 @@ export default function Home() {
         </section>
       </main>
       <footer className="w-full border-t border-zinc-800 py-6 md:py-0">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
-          <p className="text-center text-sm text-gray-400 md:text-left">
-            © {new Date().getFullYear()} Yes or No Wheel. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <Link href="/about" className="text-sm text-gray-400 hover:underline">
-              About
-            </Link>
-            <Link href="/privacy" className="text-sm text-gray-400 hover:underline">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-sm text-gray-400 hover:underline">
-              Terms
-            </Link>
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
+            <p className="text-center text-sm text-gray-400 md:text-left">
+              © {new Date().getFullYear()} Yes or No Wheel. All rights reserved.
+            </p>
+            <div className="flex gap-4">
+              <Link href="/about" className="text-sm text-gray-400 hover:underline">
+                About
+              </Link>
+              <Link href="/privacy" className="text-sm text-gray-400 hover:underline">
+                Privacy
+              </Link>
+              <Link href="/terms" className="text-sm text-gray-400 hover:underline">
+                Terms
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

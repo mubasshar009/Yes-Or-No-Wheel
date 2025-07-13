@@ -19,7 +19,9 @@ export default function Head() {
       <meta property="og:url" content="https://yourwebsite.com" />
       <meta property="og:image" content="https://yourwebsite.com/og-image.jpg" />
       <meta name="twitter:card" content="summary_large_image" />
-      <link rel="canonical" href="https://yourwebsite.com" />
+      {/* ✅ Add this canonical tag */}
+      <link rel="canonical" href="https://yesno-wheel.com/" />
+      {/* Other meta tags */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

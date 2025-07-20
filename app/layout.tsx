@@ -46,6 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Yes or No Wheel - Make Quick Decisions",
     description: "Stuck on a decision? Let our random Yes or No Wheel decide for you. Simple, fast, and completely random.",
+  }
 }
 
 export default function RootLayout({

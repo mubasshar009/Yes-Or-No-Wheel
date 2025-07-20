@@ -5,6 +5,9 @@ import { ChevronLeft } from "lucide-react"
 export const metadata = {
   title: "Privacy Policy - Yes or No Wheel",
   description: "Privacy policy for the Yes or No Wheel decision-making tool.",
+  alternates: {
+    canonical: 'https://yesno-wheel.com/privacy',
+  },
 }
 
 export default function PrivacyPage() {

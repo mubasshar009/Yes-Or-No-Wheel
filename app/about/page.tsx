@@ -5,6 +5,9 @@ import { ChevronLeft } from "lucide-react"
 export const metadata = {
   title: "About - Yes or No Wheel",
   description: "Learn about the Yes or No Wheel decision-making tool and its purpose.",
+  alternates: {
+    canonical: 'https://yesno-wheel.com/about',
+  },
 }
 
 export default function AboutPage() {

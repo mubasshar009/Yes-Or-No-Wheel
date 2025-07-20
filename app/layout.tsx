@@ -15,6 +15,37 @@ export const metadata: Metadata = {
   description:
     "Create and spin customizable wheels for decisions, games, or giveaways. Save your wheels, use templates, and enjoy animated spinning effects.",
   generator: "v0.dev",
+  metadataBase: new URL('https://yesno-wheel.com'),
+  alternates: {
+    canonical: 'https://yesno-wheel.com',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  openGraph: {
+    title: "Yes or No Wheel - Make Quick Decisions",
+    description: "Stuck on a decision? Let our random Yes or No Wheel decide for you. Simple, fast, and completely random.",
+    url: 'https://yesno-wheel.com',
+    siteName: 'Yes or No Wheel',
+    type: 'website',
+    images: [
+      {
+        url: '/favicon.png',
+        width: 192,
+        height: 192,
+        alt: 'Yes or No Wheel',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Yes or No Wheel - Make Quick Decisions",
+    description: "Stuck on a decision? Let our random Yes or No Wheel decide for you. Simple, fast, and completely random.",
 }
 
 export default function RootLayout({

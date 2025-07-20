@@ -5,6 +5,9 @@ import { ChevronLeft } from "lucide-react"
 export const metadata = {
   title: "Terms of Service - Yes or No Wheel",
   description: "Terms and conditions for using the Yes or No Wheel decision-making tool.",
+  alternates: {
+    canonical: 'https://yesno-wheel.com/terms',
+  },
 }
 
 export default function TermsPage() {

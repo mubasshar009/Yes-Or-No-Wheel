@@ -16,12 +16,25 @@ export default function Head() {
         content="Stuck on a decision? Let our random Yes or No Wheel decide for you. Simple, fast, and completely random."
       />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://yourwebsite.com" />
-      <meta property="og:image" content="https://yourwebsite.com/og-image.jpg" />
+      <meta property="og:url" content="https://yesno-wheel.com" />
+      <meta property="og:image" content="https://yesno-wheel.com/favicon.png" />
       <meta name="twitter:card" content="summary_large_image" />
-      {/* ✅ Add this canonical tag */}
+      
+      {/* Strong canonical signals */}
       <link rel="canonical" href="https://yesno-wheel.com/" />
-      {/* Other meta tags */}
+      <link rel="alternate" href="https://yesno-wheel.com/" hrefLang="en" />
+      <link rel="alternate" href="https://yesno-wheel.com/" hrefLang="x-default" />
+      
+      {/* Prevent indexing of old domain */}
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      
+      {/* Additional SEO signals */}
+      <meta name="author" content="Yes or No Wheel" />
+      <meta name="publisher" content="Yes or No Wheel" />
+      <meta name="copyright" content="Yes or No Wheel" />
+      <meta name="language" content="English" />
+      <meta name="revisit-after" content="7 days" />
+      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -30,14 +43,32 @@ export default function Head() {
             "@type": "WebApplication",
             name: "Yes or No Wheel",
             description: "A free online tool that helps you make yes or no decisions randomly.",
-            url: "https://yourwebsite.com",
+            url: "https://yesno-wheel.com",
             applicationCategory: "UtilityApplication",
+            operatingSystem: "All",
+            browserRequirements: "Requires JavaScript. Requires HTML5.",
             offers: {
               "@type": "Offer",
               price: "0",
               priceCurrency: "USD",
             },
-            operatingSystem: "All",
+            creator: {
+              "@type": "Organization",
+              name: "Yes or No Wheel",
+              url: "https://yesno-wheel.com"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Yes or No Wheel",
+              url: "https://yesno-wheel.com"
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": "https://yesno-wheel.com"
+            },
+            sameAs: [
+              "https://yesno-wheel.com"
+            ]
           }),
         }}
       />

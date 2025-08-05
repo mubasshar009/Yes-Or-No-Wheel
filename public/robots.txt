@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
+# Explicitly disallow old domain crawling (if you can add this to the old domain)
+# User-agent: *
+# Disallow: /
+
 Sitemap: https://yesno-wheel.com/sitemap.xml
+
+# Additional directives
+Crawl-delay: 1

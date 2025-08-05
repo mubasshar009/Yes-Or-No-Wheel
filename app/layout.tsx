@@ -19,12 +19,21 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://yesno-wheel.com',
   },
+  other: {
+    'google-site-verification': 'your-verification-code-here', // Replace with your actual verification code
+  },
   robots: {
     index: true,
     follow: true,
+    'max-snippet': -1,
+    'max-image-preview': 'large',
+    'max-video-preview': -1,
     googleBot: {
       index: true,
       follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
     },
   },
   openGraph: {
@@ -33,6 +42,7 @@ export const metadata: Metadata = {
     url: 'https://yesno-wheel.com',
     siteName: 'Yes or No Wheel',
     type: 'website',
+    locale: 'en_US',
     images: [
       {
         url: '/favicon.png',
@@ -46,6 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Yes or No Wheel - Make Quick Decisions",
     description: "Stuck on a decision? Let our random Yes or No Wheel decide for you. Simple, fast, and completely random.",
+    site: '@yesnowheel', // Replace with your actual Twitter handle if you have one
   }
 }
 
